@@ -30,17 +30,6 @@
         android:textSize="15sp"
         android:fontFamily="monospace" />
 
-    <TextView
-        android:id="@+id/tokenText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#e6edf3"
-        android:fontFamily="monospace"
-        android:textIsSelectable="true" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,6 +55,14 @@
             android:text="Save"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/toggleTokenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/show_token"
+        android:textSize="13sp" />
 
     <Button
         android:id="@+id/remoteButton"

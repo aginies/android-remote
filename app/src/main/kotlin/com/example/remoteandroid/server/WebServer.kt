@@ -566,6 +566,7 @@ fetch('/settings').then(function(r){ return r.json(); }).then(function(s){
 setInterval(stats, 1000);
 stats();
 </script>
+<p style="text-align:center;color:#5c6b79;font-size:12px;padding:6px">RemoteAndroid — by Antoine Giniès</p>
 </body>
 </html>
 """

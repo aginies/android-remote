@@ -84,11 +84,10 @@ class MjpegFrameSource {
         private var seenSeq = 0L
         private var closed = false
 
-        override fun read(): Int {
-            val one = ByteArray(1)
-            val n = read(one, 0, 1)
-            return if (n <= 0) -1 else one[0].toInt() and 0xFF
-        }
+        // NanoHTTPD reads the stream only via the bulk overload, so the
+        // single-byte form is unsupported (and would have allocated a
+        // ByteArray(1) per byte). Callers must use read(byte[], Int, Int).
+        override fun read(): Int = throw UnsupportedOperationException("Use the bulk read(byte[], Int, Int) overload.")
 
         override fun read(
             b: ByteArray,

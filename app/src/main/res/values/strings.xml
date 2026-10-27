@@ -10,4 +10,7 @@
     <string name="remote_enabled">Remote control: enabled</string>
     <string name="remote_control_label">RemoteAndroid Remote Control</string>
     <string name="accessibility_desc">Lets RemoteAndroid inject taps, swipes, back/home keys, and text so the viewer page can control the device screen.</string>
+    <string name="author">Antoine Giniès</string>
+    <string name="show_token">Show token</string>
+    <string name="hide_token">Hide token</string>
 </resources>

@@ -52,6 +52,11 @@ class ScreenCapturer(
     private var cropBitmap: Bitmap? = null
     private val scalePaint = Paint(Paint.FILTER_BITMAP_FLAG)
 
+    // Reused for the scale-to-target draw; recreated only when the slot bitmap
+    // it wraps is recycled and reallocated (rare, on dimension change).
+    private var scaleCanvas: Canvas? = null
+    private var scaleCanvasBitmap: Bitmap? = null
+
     // Reused encode slots (producer = capture thread, consumer = encode worker).
     private val slotLock = Object()
     private val slots = arrayOfNulls<Bitmap>(2)
@@ -185,7 +190,11 @@ class ScreenCapturer(
             lastFrameAt = now
 
             // 4. Copy the frame into the slot (no new bitmap per frame).
-            Canvas(slot).drawBitmap(native, null, Rect(0, 0, targetW, targetH), scalePaint)
+            if (scaleCanvas == null || scaleCanvasBitmap !== slot) {
+                scaleCanvas = Canvas(slot)
+                scaleCanvasBitmap = slot
+            }
+            scaleCanvas!!.drawBitmap(native, null, Rect(0, 0, targetW, targetH), scalePaint)
 
             // 5. Move the expensive JPEG encode off the capture thread.
             encodeExecutor.execute {

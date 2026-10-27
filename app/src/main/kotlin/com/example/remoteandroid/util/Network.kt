@@ -4,7 +4,7 @@ import java.net.Inet4Address
 import java.net.NetworkInterface
 
 object Network {
-    private const val CACHE_TTL_MS = 5_000L
+    private const val CACHE_TTL_MS = 30_000L
 
     private var cachedIps: List<String> = emptyList()
     private var cachedAt = 0L

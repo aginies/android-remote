@@ -33,7 +33,6 @@ class MainActivity : Activity() {
 
     private lateinit var status: TextView
     private lateinit var urls: TextView
-    private lateinit var tokenText: TextView
     private lateinit var logText: TextView
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
@@ -41,13 +40,15 @@ class MainActivity : Activity() {
     private lateinit var tokenInput: EditText
     private lateinit var setTokenButton: Button
 
+    // When false the access token is masked in the log (shown as dots).
+    private var tokenVisible = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         status = findViewById(R.id.status)
         urls = findViewById(R.id.urls)
-        tokenText = findViewById(R.id.tokenText)
         logText = findViewById(R.id.logText)
         startButton = findViewById(R.id.startButton)
         stopButton = findViewById(R.id.stopButton)
@@ -75,6 +76,13 @@ class MainActivity : Activity() {
 
         remoteButton.setOnClickListener {
             openAccessibilitySettings()
+        }
+
+        val toggleTokenButton = findViewById<Button>(R.id.toggleTokenButton)
+        toggleTokenButton.setOnClickListener {
+            tokenVisible = !tokenVisible
+            toggleTokenButton.setText(if (tokenVisible) R.string.hide_token else R.string.show_token)
+            refreshStatus()
         }
 
         tokenInput.setText(
@@ -167,29 +175,26 @@ class MainActivity : Activity() {
             } else {
                 ""
             }
-        tokenText.text =
-            if (running && SessionStatus.token.isNotEmpty()) {
-                "Access token: ${SessionStatus.token}"
-            } else {
-                ""
-            }
         logText.text = buildLog()
     }
 
     private fun buildLog(): String {
         val sb = StringBuilder()
         if (SessionStatus.token.isNotEmpty()) {
-            sb.append("Token: ").append(SessionStatus.token).append('\n')
+            val display = if (tokenVisible) SessionStatus.token else "\u2022".repeat(SessionStatus.token.length)
+            sb.append("Token: ").append(display).append('\n')
         }
         sb
             .append("Remote control: ")
             .append(if (RemoteControl.isConnected) "enabled" else "disabled")
             .append('\n')
-        sb.append("Viewers: ").append(SessionStatus.clients().size)
-        if (SessionStatus.clients().isNotEmpty()) {
-            sb.append(" — ").append(SessionStatus.clients().joinToString(", "))
+        val clients = SessionStatus.clients()
+        sb.append("Viewers: ").append(clients.size)
+        if (clients.isNotEmpty()) {
+            sb.append(" — ").append(clients.joinToString(", "))
         }
         sb.append('\n')
+        sb.append("Author: ").append(R.string.author).append('\n')
         val s = SessionStatus.settings
         sb
             .append("Settings: ")
