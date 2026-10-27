@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">RemoteAndroid</string>
+    <string name="start">Start sharing</string>
+    <string name="stop">Stop sharing</string>
+    <string name="status_idle">Idle — tap Start to share your screen</string>
+    <string name="status_consent">Waiting for system consent…</string>
+    <string name="status_running">Sharing — open the viewer link below in a browser</string>
+    <string name="status_starting">Starting screen sharing…</string>
+    <string name="remote_enable">Enable remote control</string>
+    <string name="remote_enabled">Remote control: enabled</string>
+    <string name="remote_control_label">RemoteAndroid Remote Control</string>
+    <string name="accessibility_desc">Lets RemoteAndroid inject taps, swipes, back/home keys, and text so the viewer page can control the device screen.</string>
+</resources>

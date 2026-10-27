@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- screen -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,26 h52 a4,4 0 0 1 4,4 v38 a4,4 0 0 1 -4,4 h-52 a4,4 0 0 1 -4,-4 v-38 a4,4 0 0 1 4,-4 z" />
+
+    <!-- stand -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46,76 h16 v4 h-16 z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,82 h28 v3 h-28 z" />
+
+    <!-- play glyph inside screen -->
+    <path
+        android:fillColor="#1E7B50"
+        android:pathData="M48,42 L66,54 L48,66 Z" />
+</vector>
