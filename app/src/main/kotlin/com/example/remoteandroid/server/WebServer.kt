@@ -364,7 +364,8 @@ private const val HTML: String = """
 <style>
 html,body{margin:0;height:100%;background:#0f1419;color:#e6edf3;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden;display:flex;flex-direction:column}
 #stage{flex:1 1 auto;position:relative;min-height:0;background:#000}
-#frame{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;touch-action:none;-webkit-user-drag:none}
+#frame{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;touch-action:none;-webkit-user-drag:none;-moz-user-select:none;-webkit-user-select:none;user-select:none}
+*{-webkit-user-select:none;user-select:none}
 #bar{flex:0 0 auto;background:rgba(26,32,41,.95);border-bottom:1px solid #26303a;z-index:10}
 .row{display:flex;align-items:center;gap:12px;padding:8px 14px;flex-wrap:wrap}
 .row+.row{border-top:1px solid #202936}
@@ -515,6 +516,10 @@ function ripple(x, y){
 var frame = el('frame');
 var dragging = false, sx = 0, sy = 0, pid = 0;
 frame.addEventListener('pointerdown', function(e){
+  // Cancel the browser's native selection (the blue overlay): selection is
+  // initiated on pointerdown, so preventDefault() here keeps the interaction
+  // limited to sending actions to the remote device.
+  e.preventDefault();
   dragging = true; pid = e.pointerId;
   var c = contentRect(frame);
   sx = clamp01((e.clientX - c.left) / c.width);
