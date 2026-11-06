@@ -393,6 +393,7 @@ label{color:#8b98a5;display:flex;align-items:center;gap:6px}
 <div id="bar">
   <div class="row">
     <button id="gear" title="Settings (?)">⚙</button>
+    <button id="fs" title="Fullscreen (F)">⛶</button>
     <a id="title" href="/">RemoteAndroid</a>
     <span id="url"></span>
     <span id="conn"><span class="dot"></span><span id="connlabel">…</span></span>
@@ -555,7 +556,32 @@ el('wake').onclick = function(){ sendControl({ type:'wake' }); };
 el('send').onclick = function(){ var t = el('text').value; if (t) { sendControl({ type:'text', text: t }); el('text').value = ''; } };
 el('text').addEventListener('keydown', function(e){ if (e.key === 'Enter') el('send').onclick(); });
 el('gear').onclick = function(){ el('panel').classList.toggle('open'); };
-document.addEventListener('keydown', function(e){ if (e.key === '?') el('panel').classList.toggle('open'); });
+function isFs(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+function toggleFs(){
+  if (isFs()) {
+    var x = document.exitFullscreen || document.webkitExitFullscreen;
+    if (x) x.call(document);
+  } else {
+    var d = document.documentElement;
+    var m = d.requestFullscreen || d.webkitRequestFullscreen;
+    if (m) m.call(d);
+  }
+  updateFsBtn();
+}
+function updateFsBtn(){
+  var on = isFs();
+  el('fs').title = on ? 'Exit fullscreen (F)' : 'Fullscreen (F)';
+  el('bar').style.display = on ? 'none' : '';
+  el('footer').style.display = on ? 'none' : '';
+}
+el('fs').onclick = toggleFs;
+document.addEventListener('fullscreenchange', updateFsBtn);
+document.addEventListener('webkitfullscreenchange', updateFsBtn);
+document.addEventListener('keydown', function(e){
+  var tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+  if (e.key === '?') el('panel').classList.toggle('open');
+  if ((e.key === 'f' || e.key === 'F') && tag !== 'input' && tag !== 'textarea' && tag !== 'select') toggleFs();
+});
 el('fps').oninput = function(){ el('fpsv').textContent = el('fps').value; };
 el('quality').oninput = function(){ el('qv').textContent = el('quality').value + '%'; };
 el('preset').onchange = function(){
@@ -571,7 +597,7 @@ fetch('/settings').then(function(r){ return r.json(); }).then(function(s){
 setInterval(stats, 1000);
 stats();
 </script>
-<p style="text-align:center;color:#5c6b79;font-size:12px;padding:6px">RemoteAndroid — by Antoine Giniès</p>
+<p id="footer" style="text-align:center;color:#5c6b79;font-size:12px;padding:6px">RemoteAndroid — by Antoine Giniès</p>
 </body>
 </html>
 """
